@@ -7,6 +7,7 @@ import wikipedia
 import wolframalpha
 import ollama
 import asyncio
+import threading
 
 # Speech engine initialisation
 engine = pyttsx3.init()
@@ -24,9 +25,11 @@ appId = '5R49J7-J888YX9J2V'
 wolframClient = wolframalpha.Client(appId)
  
 def speak(text, rate = 120):
+    global stop_speech
     engine.setProperty('rate', rate)
     engine.say(text)
     engine.runAndWait()
+    stop_speech = False  # Reset stop flag after speech is finished
  
 def parseCommand():
     listener = sr.Recognizer()
@@ -40,6 +43,11 @@ def parseCommand():
         print('Recognizing speech...')
         query = listener.recognize_google(input_speech, language='en_gb')
         print(f'The input speech was: {query}')
+
+        if 'stop' in query.lower():  # Check for the stop word
+            global stop_speech
+            stop_speech = True
+
     except Exception as exception:
         print('I did not quite catch that')
         speak('I did not quite catch that')
@@ -102,8 +110,25 @@ async def start_conversation(content):
     print(message)
     response = await ollama.AsyncClient().chat(model='llama3', messages=[message])
     print(response['message']['content'])
-    speak(response['message']['content'])
+    
+    # Define a function to speak in a separate thread
+    def speak_in_thread(text):
+        global stop_speech
+        stop_speech = False
+        thread = threading.Thread(target=speak, args=(text,))
+        thread.start()
+        thread.join()  # Wait for the speech to finish or be interrupted
+
+    # Speak the AI's response in a separate thread
+    speak_in_thread(response['message']['content'])
+
+    # Check for stop word during speech
+    while not stop_speech:
+        pass  # Keep listening for the stop word
  
+# Global variable to track if speech should be stopped
+stop_speech = False
+
 # Main loop
 if __name__ == '__main__':
     speak('All systems nominal.')
