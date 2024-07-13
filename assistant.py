@@ -17,7 +17,7 @@ activationWord = 'computer' # Single word
  
 # Configure browser
 # Set the path
-chrome_path = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
+chrome_path = r"C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe"
 webbrowser.register('chrome', None, webbrowser.BackgroundBrowser(chrome_path))
  
 # Wolfram Alpha client
@@ -50,7 +50,7 @@ def parseCommand():
 
     except Exception as exception:
         print('I did not quite catch that')
-        speak('I did not quite catch that')
+        #speak('I did not quite catch that')
         print(exception)
         return 'None'
  
@@ -164,7 +164,7 @@ if __name__ == '__main__':
             if query[0] == 'go' and query[1] == 'to':
                 speak('Opening...')
                 query = ' '.join(query[2:])
-                webbrowser.get('chrome').open_new(query)
+                webbrowser.get('brave').open_new(query)
  
             # Wikipedia 
             if query[0] == 'wikipedia':
@@ -173,7 +173,7 @@ if __name__ == '__main__':
                 speak(search_wikipedia(query))
                 
             # Wolfram Alpha
-            if query[0] == 'compute' or query[0] == 'computer':
+            if query[0] == 'compute' or query[0] == 'computer' or query[0] == 'calculate' or query[0] == 'query':
                 query = ' '.join(query[1:])
                 speak('Computing')
                 try: 
