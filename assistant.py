@@ -105,7 +105,7 @@ def search_wolframAlpha(query = ''):
             speak('Computation failed. Querying universal databank.')
             return search_wikipedia(question)
  
-async def start_conversation(content):
+async def stbbrt_conversation(content):
     message = {'role': 'user', 'content': content}
     print(message)
     response = await ollama.AsyncClient().chat(model='llama3', messages=[message])
