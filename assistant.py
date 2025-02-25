@@ -17,11 +17,11 @@ activationWord = 'computer' # Single word
  
 # Configure browser
 # Set the path
-chrome_path = r"C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe"
+chrome_path = r"__________APPLICATION PATH___________"
 webbrowser.register('chrome', None, webbrowser.BackgroundBrowser(chrome_path))
  
 # Wolfram Alpha client
-appId = '5R49J7-J888YX9J2V'
+appId = '______________________'
 wolframClient = wolframalpha.Client(appId)
  
 def speak(text, rate = 120):
@@ -108,7 +108,7 @@ def search_wolframAlpha(query = ''):
 async def stbbrt_conversation(content):
     message = {'role': 'user', 'content': content}
     print(message)
-    response = await ollama.AsyncClient().chat(model='llama3', messages=[message])
+    response = await ollama.AsyncClient().chat(model='_______', messages=[message])
     print(response['message']['content'])
     
     # Define a function to speak in a separate thread
